@@ -1,8 +1,8 @@
 package model.expression;
 
-import model.state.MyDictionary;
+import model.state.Dictionary;
 import model.value.Value;
 
 public interface Expression {
-  Value evaluate(MyDictionary<Value> symbolTable);
+    Value evaluate(Dictionary<Value> symbolTable);
 }

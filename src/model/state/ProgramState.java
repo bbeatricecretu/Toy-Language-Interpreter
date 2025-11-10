@@ -4,13 +4,14 @@ import model.statement.Statement;
 import model.value.Value;
 
 public record ProgramState(
-    MyStack<Statement> executionStack, MyIDictionary<Value> symbolTable, MyList<Value> out) {
+        Stack<Statement> executionStack, IDictionary<Value> symbolTable, List<Value> out, IFileTable fileTable) {
 
     @Override
     public String toString() {
-        return  "Execution Stack:\n" + executionStack +
+        return "Execution Stack:\n" + executionStack +
                 "\nSymbol Table:\n" + symbolTable +
-                "\nOutput:\n" + out;
+                "\nOutput:\n" + out +
+                "\nFile Table:\n" + fileTable.toString();
     }
 
 }

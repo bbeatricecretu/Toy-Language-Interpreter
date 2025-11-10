@@ -3,5 +3,8 @@ package model.value;
 import model.type.Type;
 
 public interface Value {
-  Type getType();
+    Type getType();
+
+    boolean equals(Object other);
+    
 }

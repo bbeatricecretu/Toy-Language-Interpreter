@@ -1,17 +1,17 @@
 package controller;
 
 import model.exception.StatementException;
-import model.state.MyIStack;
+import model.state.IStack;
 import model.state.ProgramState;
 import model.statement.Statement;
 import repository.IRepository;
 
-public class MyController {
+public class Controller {
     IRepository repo;
     private boolean flag = false; //print the internal program state at each step or not.
 
     //Constructor
-    public MyController(IRepository repository) {
+    public Controller(IRepository repository) {
         this.repo = repository;
     }
 
@@ -21,7 +21,7 @@ public class MyController {
     }
 
     public ProgramState executeOneStep(ProgramState state) {
-        MyIStack<Statement> stack = state.executionStack();
+        IStack<Statement> stack = state.executionStack();
         if (stack.isEmpty()) {
             throw new StatementException("ProgramState Stack is Empty");
         }
@@ -37,14 +37,17 @@ public class MyController {
             System.out.println(program.toString());
         }
 
+        repo.logPrgStateExec();
+
         while (!program.executionStack().isEmpty()) {
             executeOneStep(program);
-
+            repo.logPrgStateExec();
             if (flag) {
                 System.out.println("\nNEXT STEP");
                 System.out.println(program.toString());
             }
         }
+
     }
 
     public void displayCurrentState() {
