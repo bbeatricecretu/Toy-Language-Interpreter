@@ -30,4 +30,10 @@ public record LogicalExpression(Expression left, Expression right, String operat
         if (operator.equals("||")) return new BoolValue(bLeft || bRight);
         else throw new ExpressionException("Invalid Operator for Logical Expression" + operator);
     }
+
+    @Override
+    public String toString() {
+        return "(" + left.toString() + " " + operator + " " + right.toString() + ")";
+    }
+
 }

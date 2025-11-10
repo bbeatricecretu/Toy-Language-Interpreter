@@ -1,0 +1,88 @@
+Program 1:
+Execution Stack:
+  (Int v
+ (v = 2
+ print (v)))
+
+Symbol Table:
+(empty)
+Output:
+(empty)
+File Table:
+(empty)
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  Int v
+  (v = 2
+ print (v))
+
+Symbol Table:
+(empty)
+Output:
+(empty)
+File Table:
+(empty)
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  (v = 2
+ print (v))
+
+Symbol Table:
+  v → 0
+
+Output:
+(empty)
+File Table:
+(empty)
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  v = 2
+  print (v)
+
+Symbol Table:
+  v → 0
+
+Output:
+(empty)
+File Table:
+(empty)
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  print (v)
+
+Symbol Table:
+  v → 2
+
+Output:
+(empty)
+File Table:
+(empty)
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+(empty)
+Symbol Table:
+  v → 2
+
+Output:
+  2
+
+File Table:
+(empty)
+
+===============================Next Statement====================================
+

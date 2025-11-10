@@ -13,4 +13,10 @@ public record VariableExpression(String variableName) implements Expression {
         }
         return symbolTable.getValue(variableName);
     }
+
+    @Override
+    public String toString() {
+        return variableName;
+    }
+
 }

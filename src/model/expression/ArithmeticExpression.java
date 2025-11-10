@@ -7,8 +7,7 @@ import model.value.IntValue;
 import model.value.Value;
 
 //Performs the operation (+, -, *, /).
-public record ArithmeticExpression(Expression left, Expression right, char operator)
-        implements Expression {
+public record ArithmeticExpression(Expression left, Expression right, char operator) implements Expression {
 
     @Override
     public Value evaluate(Dictionary<Value> symbolTable) {
@@ -31,9 +30,15 @@ public record ArithmeticExpression(Expression left, Expression right, char opera
         if (operator == '-') return new IntValue(nLeft - nRight);
         if (operator == '*') return new IntValue(nLeft * nRight);
         if (operator == '/') {
-            if (nRight == 0)
-                throw new ExpressionException("Cannot divide by zero");
+            if (nRight == 0) throw new ExpressionException("Cannot divide by zero");
             return new IntValue(nLeft / nRight);
         } else throw new ExpressionException("Invalid operator for Arithmetic Expression: " + operator);
     }
+
+    @Override
+    public String toString() {
+        return "(" + left.toString() + " " + operator + " " + right.toString() + ")";
+    }
+
+
 }
