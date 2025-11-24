@@ -1,13 +1,15 @@
 package model.expression;
 
 import model.exception.ExpressionException;
-import model.state.Dictionary;
+import model.state.IDictionary;
+import model.state.IHeap;
 import model.type.IntType;
 import model.value.BoolValue;
 import model.value.IntValue;
 import model.value.Value;
 
 public class RelationalExpression implements Expression {
+
     private final Expression exp1;
     private final Expression exp2;
     private final String operator; // <, <=, ==, !=, >, >=
@@ -19,13 +21,16 @@ public class RelationalExpression implements Expression {
     }
 
     @Override
-    public Value evaluate(Dictionary<Value> symTable) {
-        Value v1 = exp1.evaluate(symTable);
+    public Value evaluate(IDictionary<Value> symTable, IHeap heap) {
+
+        // Evaluate both expressions with heap support
+        Value v1 = exp1.evaluate(symTable, heap);
+        Value v2 = exp2.evaluate(symTable, heap);
+
+        // Type checking
         if (!(v1.getType() instanceof IntType)) {
             throw new ExpressionException("First operand is not an integer: " + v1);
         }
-
-        Value v2 = exp2.evaluate(symTable);
         if (!(v2.getType() instanceof IntType)) {
             throw new ExpressionException("Second operand is not an integer: " + v2);
         }
@@ -33,6 +38,7 @@ public class RelationalExpression implements Expression {
         int n1 = ((IntValue) v1).getValue();
         int n2 = ((IntValue) v2).getValue();
 
+        // Perform relational operation
         return switch (operator) {
             case "<" -> new BoolValue(n1 < n2);
             case "<=" -> new BoolValue(n1 <= n2);
@@ -46,7 +52,6 @@ public class RelationalExpression implements Expression {
 
     @Override
     public String toString() {
-        return "(" + exp1.toString() + " " + operator + " " + exp2.toString() + ")";
+        return "(" + exp1 + " " + operator + " " + exp2 + ")";
     }
-
 }

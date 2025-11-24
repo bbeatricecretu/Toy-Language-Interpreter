@@ -77,4 +77,9 @@ public class Dictionary<T extends Value> implements IDictionary<T> {
         }
         return sb.toString();
     }
+
+    @Override
+    public Map<String, T> getValues() {
+        return new HashMap<>(dict);
+    }
 }

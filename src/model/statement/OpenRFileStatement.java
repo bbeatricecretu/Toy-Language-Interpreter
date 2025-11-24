@@ -22,7 +22,7 @@ public record OpenRFileStatement(Expression expression) implements Statement {
     @Override
     public ProgramState execute(ProgramState state) {
         // evaluate expression and ensure it’s a string
-        Value value = expression.evaluate((Dictionary<Value>) state.symbolTable());
+        Value value = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
         if (!(value.getType() instanceof StringType)) {
             throw new FileException("Expression must evaluate to a string.");
         }

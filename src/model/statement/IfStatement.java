@@ -18,7 +18,7 @@ public record IfStatement(Expression condition, Statement trueStatement, Stateme
 
     @Override
     public ProgramState execute(ProgramState state) {
-        Value value = condition.evaluate((Dictionary<Value>) state.symbolTable()); //evaluate from Expression
+        Value value = condition.evaluate((Dictionary<Value>) state.symbolTable(), state.heap()); //evaluate from Expression
 
         if (!value.getType().equals(new BoolType())) {
             throw new StatementException("The condition have not a boolean value");

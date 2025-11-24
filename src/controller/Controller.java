@@ -1,21 +1,22 @@
 package controller;
 
 import model.exception.StatementException;
+import model.state.IHeap;
 import model.state.IStack;
 import model.state.ProgramState;
 import model.statement.Statement;
 import repository.IRepository;
 
+import java.util.List;
+
 public class Controller {
     IRepository repo;
-    private boolean flag = false; //print the internal program state at each step or not.
+    private boolean flag = false;
 
-    //Constructor
     public Controller(IRepository repository) {
         this.repo = repository;
     }
 
-    //Set Display at each step
     public void setFlag(boolean displayFlag) {
         this.flag = displayFlag;
     }
@@ -27,6 +28,15 @@ public class Controller {
         }
         Statement statement = stack.pop();
         return statement.execute(state);
+    }
+
+    private void callGarbageCollector(ProgramState state) {
+        // Extract the referenced heap addresses from symbol table values
+        List<Integer> reachableAddresses =
+                IHeap.getAddrFromValues(state.symbolTable().getValues().values());
+
+        // Perform safe GC on the heap
+        state.heap().safeGarbageCollector(reachableAddresses);
     }
 
     public void executeAllSteps() {
@@ -41,13 +51,17 @@ public class Controller {
 
         while (!program.executionStack().isEmpty()) {
             executeOneStep(program);
+
+            // run garbage collector AFTER each step
+            callGarbageCollector(program);
+
             repo.logPrgStateExec();
+
             if (flag) {
                 System.out.println("\nNEXT STEP");
                 System.out.println(program.toString());
             }
         }
-
     }
 
     public void displayCurrentState() {

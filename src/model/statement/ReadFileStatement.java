@@ -35,7 +35,7 @@ public record ReadFileStatement(Expression expression, String varName) implement
         }
 
         //  Evaluate expression (should give StringValue)
-        Value exprValue = expression.evaluate((Dictionary<Value>) state.symbolTable());
+        Value exprValue = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
         if (!(exprValue.getType() instanceof StringType)) {
             throw new FileException("Expression must evaluate to a string.");
         }

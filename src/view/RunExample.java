@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import model.exception.IException;
 
 public class RunExample extends Command {
     private final Controller controller;
@@ -14,7 +15,7 @@ public class RunExample extends Command {
     public void execute() {
         try {
             controller.executeAllSteps();
-        } catch (Exception e) {
+        } catch (IException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }

@@ -1,18 +1,20 @@
 package model.expression;
 
 import model.exception.ExpressionException;
-import model.state.Dictionary;
+import model.state.IDictionary;
+import model.state.IHeap;
 import model.type.IntType;
 import model.value.IntValue;
 import model.value.Value;
 
-//Performs the operation (+, -, *, /).
-public record ArithmeticExpression(Expression left, Expression right, char operator) implements Expression {
+public record ArithmeticExpression(Expression left, Expression right, char operator)
+        implements Expression {
 
     @Override
-    public Value evaluate(Dictionary<Value> symbolTable) {
-        Value vLeft = left.evaluate(symbolTable);
-        Value vRight = right.evaluate(symbolTable);
+    public Value evaluate(IDictionary<Value> symbolTable, IHeap heap) {
+
+        Value vLeft = left.evaluate(symbolTable, heap);
+        Value vRight = right.evaluate(symbolTable, heap);
 
         if (!vLeft.getType().equals(new IntType())) {
             throw new ExpressionException("Left operand is not an Integer Type");
@@ -22,23 +24,24 @@ public record ArithmeticExpression(Expression left, Expression right, char opera
             throw new ExpressionException("Right operand is not an Integer Type");
         }
 
-        //compute the result
         int nLeft = ((IntValue) vLeft).value();
         int nRight = ((IntValue) vRight).value();
 
-        if (operator == '+') return new IntValue(nLeft + nRight);
-        if (operator == '-') return new IntValue(nLeft - nRight);
-        if (operator == '*') return new IntValue(nLeft * nRight);
-        if (operator == '/') {
-            if (nRight == 0) throw new ExpressionException("Cannot divide by zero");
-            return new IntValue(nLeft / nRight);
-        } else throw new ExpressionException("Invalid operator for Arithmetic Expression: " + operator);
+        return switch (operator) {
+            case '+' -> new IntValue(nLeft + nRight);
+            case '-' -> new IntValue(nLeft - nRight);
+            case '*' -> new IntValue(nLeft * nRight);
+            case '/' -> {
+                if (nRight == 0)
+                    throw new ExpressionException("Cannot divide by zero");
+                yield new IntValue(nLeft / nRight);
+            }
+            default -> throw new ExpressionException("Invalid operator: " + operator);
+        };
     }
 
     @Override
     public String toString() {
-        return "(" + left.toString() + " " + operator + " " + right.toString() + ")";
+        return "(" + left + " " + operator + " " + right + ")";
     }
-
-
 }

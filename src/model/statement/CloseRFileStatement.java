@@ -22,7 +22,7 @@ public record CloseRFileStatement(Expression expression) implements Statement {
     @Override
     public ProgramState execute(ProgramState state) {
         // Evaluate expression
-        Value exprValue = expression.evaluate((Dictionary<Value>) state.symbolTable());
+        Value exprValue = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
         if (!(exprValue.getType() instanceof StringType)) {
             throw new StatementException("Expression must evaluate to a string.");
         }

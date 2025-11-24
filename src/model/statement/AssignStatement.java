@@ -20,7 +20,7 @@ public record AssignStatement(String variableName, Expression expression) implem
             throw new StatementException("Variable " + variableName + " is not defined");
         }
 
-        var value = expression.evaluate(symbolTable);
+        var value = expression.evaluate(symbolTable, state.heap());
         var variableType = symbolTable.getType(variableName);
 
         if (!variableType.equals(value.getType())) {

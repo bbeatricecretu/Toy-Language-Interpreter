@@ -1,0 +1,240 @@
+Program 1:
+Execution Stack:
+  (Var v
+ (new(v, 20)
+ (Var a
+ (new(a, v)
+ (new(v, 30)
+ print (rH(rH(a))))))))
+
+Symbol Table:
+(empty)
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  Var v
+  (new(v, 20)
+ (Var a
+ (new(a, v)
+ (new(v, 30)
+ print (rH(rH(a)))))))
+
+Symbol Table:
+(empty)
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  (new(v, 20)
+ (Var a
+ (new(a, v)
+ (new(v, 30)
+ print (rH(rH(a)))))))
+
+Symbol Table:
+  v → (0, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  new(v, 20)
+  (Var a
+ (new(a, v)
+ (new(v, 30)
+ print (rH(rH(a))))))
+
+Symbol Table:
+  v → (0, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  (Var a
+ (new(a, v)
+ (new(v, 30)
+ print (rH(rH(a))))))
+
+Symbol Table:
+  v → (1, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+1 -> 20
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  Var a
+  (new(a, v)
+ (new(v, 30)
+ print (rH(rH(a)))))
+
+Symbol Table:
+  v → (1, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+1 -> 20
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  (new(a, v)
+ (new(v, 30)
+ print (rH(rH(a)))))
+
+Symbol Table:
+  a → (0, Ref(int))
+  v → (1, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+1 -> 20
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  new(a, v)
+  (new(v, 30)
+ print (rH(rH(a))))
+
+Symbol Table:
+  a → (0, Ref(int))
+  v → (1, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+1 -> 20
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  (new(v, 30)
+ print (rH(rH(a))))
+
+Symbol Table:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  new(v, 30)
+  print (rH(rH(a)))
+
+Symbol Table:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+  print (rH(rH(a)))
+
+Symbol Table:
+  a → (2, Ref(int))
+  v → (3, int)
+
+Output:
+(empty)
+File Table:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+3 -> 30
+
+
+===============================Next Statement====================================
+
+Program 1:
+Execution Stack:
+(empty)
+Symbol Table:
+  a → (2, Ref(int))
+  v → (3, int)
+
+Output:
+  20
+
+File Table:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+3 -> 30
+
+
+===============================Next Statement====================================
+
