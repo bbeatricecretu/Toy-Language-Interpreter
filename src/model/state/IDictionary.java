@@ -5,15 +5,13 @@ import model.value.Value;
 
 import java.util.Map;
 
-public interface IDictionary<T extends Value> {
+public interface IDictionary<T> {
 
     boolean isDefined(String key);
 
     void setValue(String key, T value);
 
     T getValue(String key);
-
-    Type getType(String key);
 
     void declareVar(Type type, String key);
 
@@ -22,4 +20,8 @@ public interface IDictionary<T extends Value> {
     void update(String name, T value);
 
     Map<String, T> getValues();
+
+    void put(String key, T value); // Added for TypeChecker
+
+    IDictionary<T> deepCopy(); // Added for TypeChecker
 }

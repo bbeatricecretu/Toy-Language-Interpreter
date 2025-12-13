@@ -7,8 +7,7 @@ import model.value.Value;
 import java.util.HashMap;
 import java.util.Map;
 
-// Symbol Table (Dictionary)
-public class Dictionary<T extends Value> implements IDictionary<T> {
+public class Dictionary<T> implements IDictionary<T> {
     private final Map<String, T> dict;
 
     public Dictionary() {
@@ -36,9 +35,12 @@ public class Dictionary<T extends Value> implements IDictionary<T> {
         return dict.get(key);
     }
 
-    @Override
     public Type getType(String key) {
-        return getValue(key).getType();
+        // This helper is for the execution logic which uses Dictionary<Value>
+        if (getValue(key) instanceof Value v) {
+            return v.getType();
+        }
+        throw new OperationExceptions("Dictionary does not hold Values");
     }
 
     @SuppressWarnings("unchecked")
@@ -47,15 +49,12 @@ public class Dictionary<T extends Value> implements IDictionary<T> {
         if (isDefined(key)) {
             throw new OperationExceptions(key + " is already defined");
         }
+        // Used during execution (T is Value)
         dict.put(key, (T) type.getDefaultValue());
     }
 
-    // Add these two standard methods (required by later labs)
     @Override
     public T lookup(String name) {
-        if (!dict.containsKey(name)) {
-            throw new OperationExceptions(name + " not defined");
-        }
         return dict.get(name);
     }
 
@@ -65,9 +64,27 @@ public class Dictionary<T extends Value> implements IDictionary<T> {
     }
 
     @Override
+    public void put(String key, T value) {
+        dict.put(key, value);
+    }
+
+    @Override
+    public Map<String, T> getValues() {
+        return new HashMap<>(dict);
+    }
+
+    @Override
+    public IDictionary<T> deepCopy() {
+        Dictionary<T> newDict = new Dictionary<>();
+        for (Map.Entry<String, T> entry : dict.entrySet()) {
+            newDict.put(entry.getKey(), entry.getValue());
+        }
+        return newDict;
+    }
+
+    @Override
     public String toString() {
         if (dict.isEmpty()) return "(empty)";
-
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, T> entry : dict.entrySet()) {
             sb.append("  ").append(entry.getKey())
@@ -76,10 +93,5 @@ public class Dictionary<T extends Value> implements IDictionary<T> {
                     .append("\n");
         }
         return sb.toString();
-    }
-
-    @Override
-    public Map<String, T> getValues() {
-        return new HashMap<>(dict);
     }
 }

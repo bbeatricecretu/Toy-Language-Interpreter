@@ -2,10 +2,13 @@ package model.statement;
 
 import model.exception.FileException;
 import model.exception.StatementException;
+import model.exception.TypeCheckException;
 import model.expression.Expression;
 import model.state.Dictionary;
+import model.state.IDictionary;
 import model.state.ProgramState;
 import model.type.StringType;
+import model.type.Type;
 import model.value.StringValue;
 import model.value.Value;
 
@@ -21,20 +24,17 @@ public record CloseRFileStatement(Expression expression) implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-        // Evaluate expression
         Value exprValue = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
         if (!(exprValue.getType() instanceof StringType)) {
             throw new StatementException("Expression must evaluate to a string.");
         }
 
-        String fileName = ((StringValue) exprValue).value();
+        String fileName = ((StringValue) exprValue).getValue();
 
-        // Check if file is opened
         if (!state.fileTable().isOpened(fileName)) {
             throw new FileException("File " + fileName + " is not opened.");
         }
 
-        // Get reader and close it
         BufferedReader reader = state.fileTable().getFile(fileName);
         try {
             reader.close();
@@ -42,9 +42,17 @@ public record CloseRFileStatement(Expression expression) implements Statement {
             throw new FileException("Error closing file: " + fileName);
         }
 
-        // Remove from file table
         state.fileTable().delete(fileName);
 
         return state;
+    }
+
+    @Override
+    public IDictionary<Type> typecheck(IDictionary<Type> typeEnv) throws TypeCheckException {
+        if (expression.typecheck(typeEnv).equals(new StringType())) {
+            return typeEnv;
+        } else {
+            throw new TypeCheckException("CloseRFile requires a string expression");
+        }
     }
 }

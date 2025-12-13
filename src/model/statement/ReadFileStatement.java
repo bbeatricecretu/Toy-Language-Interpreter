@@ -2,11 +2,14 @@ package model.statement;
 
 import model.exception.FileException;
 import model.exception.StatementException;
+import model.exception.TypeCheckException;
 import model.expression.Expression;
 import model.state.Dictionary;
+import model.state.IDictionary;
 import model.state.ProgramState;
 import model.type.IntType;
 import model.type.StringType;
+import model.type.Type;
 import model.value.IntValue;
 import model.value.StringValue;
 import model.value.Value;
@@ -25,7 +28,6 @@ public record ReadFileStatement(Expression expression, String varName) implement
     public ProgramState execute(ProgramState state) {
         var symTable = (Dictionary<Value>) state.symbolTable();
 
-        //  Verify variable exists and is of type int
         if (!symTable.isDefined(varName)) {
             throw new StatementException("Variable " + varName + " is not defined.");
         }
@@ -34,22 +36,19 @@ public record ReadFileStatement(Expression expression, String varName) implement
             throw new StatementException("Variable " + varName + " must be of type int.");
         }
 
-        //  Evaluate expression (should give StringValue)
         Value exprValue = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
         if (!(exprValue.getType() instanceof StringType)) {
             throw new FileException("Expression must evaluate to a string.");
         }
 
-        String fileName = ((StringValue) exprValue).value();
+        String fileName = ((StringValue) exprValue).getValue();
 
-        // 3️⃣ Check file is opened
         if (!state.fileTable().isOpened(fileName)) {
             throw new FileException("File " + fileName + " is not opened.");
         }
 
         BufferedReader reader = state.fileTable().getFile(fileName);
 
-        //  Read one line and parse integer
         try {
             String val = reader.readLine();
             int result;
@@ -59,7 +58,6 @@ public record ReadFileStatement(Expression expression, String varName) implement
                 result = Integer.parseInt(val.trim());
             }
 
-            //  Update variable in symbol table
             symTable.update(varName, new IntValue(result));
 
         } catch (IOException exception) {
@@ -69,5 +67,18 @@ public record ReadFileStatement(Expression expression, String varName) implement
         }
 
         return state;
+    }
+
+    @Override
+    public IDictionary<Type> typecheck(IDictionary<Type> typeEnv) throws TypeCheckException {
+        Type typeExpr = expression.typecheck(typeEnv);
+        Type typeVar = typeEnv.lookup(varName);
+        if (!typeExpr.equals(new StringType())) {
+            throw new TypeCheckException("ReadFile requires a string expression");
+        }
+        if (!typeVar.equals(new IntType())) {
+            throw new TypeCheckException("ReadFile requires an int variable");
+        }
+        return typeEnv;
     }
 }

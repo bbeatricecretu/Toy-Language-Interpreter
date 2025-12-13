@@ -1,12 +1,14 @@
 package model.statement;
 
 import model.exception.StatementException;
+import model.exception.TypeCheckException;
 import model.expression.Expression;
 import model.state.IDictionary;
 import model.state.IHeap;
 import model.state.IStack;
 import model.state.ProgramState;
 import model.type.BoolType;
+import model.type.Type;
 import model.value.BoolValue;
 import model.value.Value;
 
@@ -22,31 +24,34 @@ public class WhileStatement implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-
         IDictionary<Value> symTable = state.symbolTable();
         IHeap heap = state.heap();
         IStack<Statement> stack = state.executionStack();
 
-        // 1. evaluate the condition
         Value condValue = condition.evaluate(symTable, heap);
 
-        // 2. check if boolean
         if (!condValue.getType().equals(new BoolType())) {
             throw new StatementException("While condition is not boolean");
         }
 
         BoolValue boolVal = (BoolValue) condValue;
 
-        // 3. if false → skip
-        if (!boolVal.value()) {
-            return state;
+        if (boolVal.getValue()) {
+            stack.push(this);
+            stack.push(body);
         }
-
-        // 4. if true → push body and then while(...) again
-        stack.push(this);   // repeat loop
-        stack.push(body);   // execute body first
-
         return state;
+    }
+
+    @Override
+    public IDictionary<Type> typecheck(IDictionary<Type> typeEnv) throws TypeCheckException {
+        Type typeExpr = condition.typecheck(typeEnv);
+        if (typeExpr.equals(new BoolType())) {
+            body.typecheck(typeEnv.deepCopy());
+            return typeEnv;
+        } else {
+            throw new TypeCheckException("The condition of WHILE has not the type bool");
+        }
     }
 
     @Override

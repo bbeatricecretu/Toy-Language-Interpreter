@@ -1,10 +1,13 @@
 package model.statement;
 
 import model.exception.FileException;
+import model.exception.TypeCheckException;
 import model.expression.Expression;
 import model.state.Dictionary;
+import model.state.IDictionary;
 import model.state.ProgramState;
 import model.type.StringType;
+import model.type.Type;
 import model.value.StringValue;
 import model.value.Value;
 
@@ -21,7 +24,6 @@ public record OpenRFileStatement(Expression expression) implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-        // evaluate expression and ensure it’s a string
         Value value = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
         if (!(value.getType() instanceof StringType)) {
             throw new FileException("Expression must evaluate to a string.");
@@ -29,12 +31,10 @@ public record OpenRFileStatement(Expression expression) implements Statement {
 
         String fileName = ((StringValue) value).getValue();
 
-        // check if already opened
         if (state.fileTable().isOpened(fileName)) {
             throw new FileException("File already opened: " + fileName);
         }
 
-        // open and add to file table
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             state.fileTable().add(fileName, reader);
@@ -43,5 +43,15 @@ public record OpenRFileStatement(Expression expression) implements Statement {
         }
 
         return state;
+    }
+
+    @Override
+    public IDictionary<Type> typecheck(IDictionary<Type> typeEnv) throws TypeCheckException {
+        Type typeExpr = expression.typecheck(typeEnv);
+        if (typeExpr.equals(new StringType())) {
+            return typeEnv;
+        } else {
+            throw new TypeCheckException("OpenRFile requires a string expression");
+        }
     }
 }
