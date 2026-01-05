@@ -24,25 +24,25 @@ public record OpenRFileStatement(Expression expression) implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-        Value value = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
+        Value value = expression.evaluate((Dictionary<Value>) state.getSymTable(), state.getHeap());
         if (!(value.getType() instanceof StringType)) {
             throw new FileException("Expression must evaluate to a string.");
         }
 
         String fileName = ((StringValue) value).getValue();
 
-        if (state.fileTable().isOpened(fileName)) {
+        if (state.getFileTable().isOpened(fileName)) {
             throw new FileException("File already opened: " + fileName);
         }
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            state.fileTable().add(fileName, reader);
+            state.getFileTable().add(fileName, reader);
         } catch (IOException e) {
             throw new FileException("Could not open file: " + fileName);
         }
 
-        return state;
+        return null;
     }
 
     @Override

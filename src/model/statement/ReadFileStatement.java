@@ -26,7 +26,7 @@ public record ReadFileStatement(Expression expression, String varName) implement
 
     @Override
     public ProgramState execute(ProgramState state) {
-        var symTable = (Dictionary<Value>) state.symbolTable();
+        var symTable = (Dictionary<Value>) state.getSymTable();
 
         if (!symTable.isDefined(varName)) {
             throw new StatementException("Variable " + varName + " is not defined.");
@@ -36,18 +36,18 @@ public record ReadFileStatement(Expression expression, String varName) implement
             throw new StatementException("Variable " + varName + " must be of type int.");
         }
 
-        Value exprValue = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
+        Value exprValue = expression.evaluate((Dictionary<Value>) state.getSymTable(), state.getHeap());
         if (!(exprValue.getType() instanceof StringType)) {
             throw new FileException("Expression must evaluate to a string.");
         }
 
         String fileName = ((StringValue) exprValue).getValue();
 
-        if (!state.fileTable().isOpened(fileName)) {
+        if (!state.getFileTable().isOpened(fileName)) {
             throw new FileException("File " + fileName + " is not opened.");
         }
 
-        BufferedReader reader = state.fileTable().getFile(fileName);
+        BufferedReader reader = state.getFileTable().getFile(fileName);
 
         try {
             String val = reader.readLine();
@@ -66,7 +66,7 @@ public record ReadFileStatement(Expression expression, String varName) implement
             throw new FileException("File " + fileName + " contains non-integer data.");
         }
 
-        return state;
+        return null;
     }
 
     @Override

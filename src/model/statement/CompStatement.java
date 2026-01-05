@@ -14,9 +14,9 @@ public record CompStatement(Statement first, Statement second) implements Statem
 
     @Override
     public ProgramState execute(ProgramState state) {
-        state.executionStack().push(second);
-        state.executionStack().push(first);
-        return state;
+        state.getExeStack().push(second);
+        state.getExeStack().push(first);
+        return null;
     }
 
     @Override

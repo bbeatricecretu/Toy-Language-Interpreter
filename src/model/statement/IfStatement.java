@@ -21,7 +21,7 @@ public record IfStatement(Expression condition, Statement trueStatement,
 
     @Override
     public ProgramState execute(ProgramState state) {
-        Value value = condition.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
+        Value value = condition.evaluate((Dictionary<Value>) state.getSymTable(), state.getHeap());
 
         if (!value.getType().equals(new BoolType())) {
             throw new StatementException("The condition is not a boolean value");
@@ -29,11 +29,11 @@ public record IfStatement(Expression condition, Statement trueStatement,
 
         BoolValue booleanValue = (BoolValue) value;
         if (booleanValue.getValue()) {
-            state.executionStack().push(trueStatement);
+            state.getExeStack().push(trueStatement);
         } else {
-            state.executionStack().push(falseStatement);
+            state.getExeStack().push(falseStatement);
         }
-        return state;
+        return null;
     }
 
     @Override

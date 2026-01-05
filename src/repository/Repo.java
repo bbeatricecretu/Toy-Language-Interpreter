@@ -27,26 +27,24 @@ public class Repo implements IRepository {
     }
 
     @Override
-    public ProgramState getCrtPrg() {
-        if (programs.isEmpty()) {
-            throw new IllegalStateException("No programs to run in repository");
-        }
-        return programs.getFirst();
+    public List<ProgramState> getPrgList() {
+        return this.programs;
     }
 
     @Override
-    public void logPrgStateExec() throws FileException {
+    public void setPrgList(List<ProgramState> list) {
+        this.programs.clear();
+        this.programs.addAll(list);
+    }
+
+    @Override
+    public void logPrgStateExec(ProgramState prg) throws FileException {
         try (PrintWriter logFile = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, true)))) {
-            int count = 1;
-            for (ProgramState prg : programs) {
-                logFile.printf("Program %d:%n", count++);
-                logFile.println(prg.toString());   // uses ProgramState.toString()
-                logFile.println("\n===============================Next Statement====================================\n");
-            }
+            logFile.println(prg.toString());
+            logFile.println("\n--------------------------------------------------------------------------------\n");
         } catch (IOException e) {
             throw new FileException("Error writing to log file: " + logFilePath);
         }
     }
-
 
 }

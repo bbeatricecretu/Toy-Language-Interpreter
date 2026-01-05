@@ -201,6 +201,35 @@ public class Interpreter {
                 )
         );
 
+        // Testing Fork (Concurrent Example)
+        Statement ex13 = new CompStatement(
+                new VarDeclStatement(new IntType(), "v"),
+                new CompStatement(
+                        new VarDeclStatement(new RefType(new IntType()), "a"),
+                        new CompStatement(
+                                new AssignStatement("v", new ValueExpression(new IntValue(10))),
+                                new CompStatement(
+                                        new HeapAllocation("a", new ValueExpression(new IntValue(22))),
+                                        new CompStatement(
+                                                new ForkStatement(new CompStatement(
+                                                        new WriteHeapStatement("a", new ValueExpression(new IntValue(30))),
+                                                        new CompStatement(
+                                                                new AssignStatement("v", new ValueExpression(new IntValue(32))),
+                                                                new CompStatement(
+                                                                        new PrintStatement(new VariableExpression("v")),
+                                                                        new PrintStatement(new ReadHeapExpression(new VariableExpression("a")))
+                                                                )
+                                                        )
+                                                )),
+                                                new CompStatement(
+                                                        new PrintStatement(new VariableExpression("v")),
+                                                        new PrintStatement(new ReadHeapExpression(new VariableExpression("a")))
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
         TextMenu menu = new TextMenu();
         menu.addCommand(new ExitCommand("0", "Exit"));
 
@@ -216,6 +245,7 @@ public class Interpreter {
         addExample(menu, ex10, "10", "Ref int v; new(v,20); print(rH(v)); wH(v,30); print(rH(v)+5)", "log10.txt");
         addExample(menu, ex11, "11", "GC test", "log11.txt");
         addExample(menu, ex12, "12", "while test", "log12.txt");
+        addExample(menu, ex13, "13", "fork test", "log13.txt");
 
         menu.show();
     }
@@ -231,19 +261,22 @@ public class Interpreter {
     }
 
     private static Controller makeController(Statement stmt, String logFile) {
-        Stack<Statement> stack = new Stack<>();
-        Dictionary<Value> dict = new Dictionary<>();
-        List<Value> out = new List<>();
+        IStack<Statement> stack = new Stack<>();
+        stack.push(stmt);
+        IDictionary<Value> symTable = new Dictionary<>();
+        model.state.IList<Value> out = new model.state.List<>();
         IFileTable fileTable = new FileTable();
         IHeap heap = new Heap();
 
-        stack.push(stmt);
-        ProgramState ps = new ProgramState(stack, dict, out, fileTable, heap);
+        // 3. Create the initial ProgramState
+        ProgramState initialProgram = new ProgramState(stack, symTable, out, fileTable, heap);
 
-        java.util.List<ProgramState> list = new ArrayList<>();
-        list.add(ps);
+        // 4. Repository List (MUST be java.util.List for Concurrency/Streams)
+        java.util.List<ProgramState> prgList = new java.util.ArrayList<>();
+        prgList.add(initialProgram);
 
-        IRepository repo = new Repo(list, logFile);
+        // 5. Initialize Repo and Controller
+        IRepository repo = new Repo(prgList, logFile);
         return new Controller(repo);
     }
 }

@@ -24,27 +24,27 @@ public record CloseRFileStatement(Expression expression) implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-        Value exprValue = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
+        Value exprValue = expression.evaluate((Dictionary<Value>) state.getSymTable(), state.getHeap());
         if (!(exprValue.getType() instanceof StringType)) {
             throw new StatementException("Expression must evaluate to a string.");
         }
 
         String fileName = ((StringValue) exprValue).getValue();
 
-        if (!state.fileTable().isOpened(fileName)) {
+        if (!state.getFileTable().isOpened(fileName)) {
             throw new FileException("File " + fileName + " is not opened.");
         }
 
-        BufferedReader reader = state.fileTable().getFile(fileName);
+        BufferedReader reader = state.getFileTable().getFile(fileName);
         try {
             reader.close();
         } catch (IOException e) {
             throw new FileException("Error closing file: " + fileName);
         }
 
-        state.fileTable().delete(fileName);
+        state.getFileTable().delete(fileName);
 
-        return state;
+        return null;
     }
 
     @Override

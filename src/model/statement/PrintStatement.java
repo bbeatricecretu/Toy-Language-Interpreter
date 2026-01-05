@@ -17,9 +17,9 @@ public record PrintStatement(Expression expression) implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-        Value value = expression.evaluate((Dictionary<Value>) state.symbolTable(), state.heap());
-        state.out().add(value);
-        return state;
+        Value val = expression.evaluate(state.getSymTable(), state.getHeap());
+        state.getOut().add(val);
+        return null;
     }
 
     @Override

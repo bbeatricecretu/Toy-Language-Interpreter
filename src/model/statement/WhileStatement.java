@@ -24,9 +24,9 @@ public class WhileStatement implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-        IDictionary<Value> symTable = state.symbolTable();
-        IHeap heap = state.heap();
-        IStack<Statement> stack = state.executionStack();
+        IDictionary<Value> symTable = state.getSymTable();
+        IHeap heap = state.getHeap();
+        IStack<Statement> stack = state.getExeStack();
 
         Value condValue = condition.evaluate(symTable, heap);
 
@@ -40,7 +40,7 @@ public class WhileStatement implements Statement {
             stack.push(this);
             stack.push(body);
         }
-        return state;
+        return null;
     }
 
     @Override

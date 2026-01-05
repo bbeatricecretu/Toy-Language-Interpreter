@@ -12,10 +12,10 @@ import model.value.Value;
 public record AssignStatement(String variableName, Expression expression) implements Statement {
     @Override
     public ProgramState execute(ProgramState state) {
-        Dictionary<Value> symbolTable = (Dictionary<Value>) state.symbolTable();
+        Dictionary<Value> symbolTable = (Dictionary<Value>) state.getSymTable();
         if (!symbolTable.isDefined(variableName))
             throw new StatementException("Variable " + variableName + " is not defined");
-        var value = expression.evaluate(symbolTable, state.heap());
+        var value = expression.evaluate(symbolTable, state.getHeap());
         var variableType = symbolTable.getType(variableName);
 
         if (!variableType.equals(value.getType())) {
@@ -23,7 +23,7 @@ public record AssignStatement(String variableName, Expression expression) implem
         }
 
         symbolTable.setValue(variableName, value);
-        return state;
+        return null;
     }
 
     @Override

@@ -23,8 +23,8 @@ public class HeapAllocation implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-        IDictionary<Value> symTable = state.symbolTable();
-        IHeap heap = state.heap();
+        IDictionary<Value> symTable = state.getSymTable();
+        IHeap heap = state.getHeap();
 
         if (!symTable.isDefined(varName)) {
             throw new StatementException("Variable " + varName + " is not defined.");
@@ -43,7 +43,7 @@ public class HeapAllocation implements Statement {
         int newAddress = heap.allocate(exprValue);
         symTable.setValue(varName, new RefValue(newAddress, refType.getInner()));
 
-        return state;
+        return null;
     }
 
     @Override

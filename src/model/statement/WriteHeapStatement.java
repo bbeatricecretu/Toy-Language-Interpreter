@@ -23,8 +23,8 @@ public class WriteHeapStatement implements Statement {
 
     @Override
     public ProgramState execute(ProgramState state) {
-        IDictionary<Value> symTable = state.symbolTable();
-        IHeap heap = state.heap();
+        IDictionary<Value> symTable = state.getSymTable();
+        IHeap heap = state.getHeap();
 
         if (!symTable.isDefined(varName)) {
             throw new StatementException("Variable " + varName + " is not defined.");
@@ -47,7 +47,7 @@ public class WriteHeapStatement implements Statement {
         }
 
         heap.update(address, exprValue);
-        return state;
+        return null;
     }
 
     @Override

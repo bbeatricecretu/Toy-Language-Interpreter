@@ -1,0 +1,417 @@
+Id: 9
+ExeStack:
+  (Ref(int) v; (new(v, 20); (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5)))))))
+
+SymTable:
+(empty)
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  Ref(int) v
+  (new(v, 20); (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5))))))
+
+SymTable:
+(empty)
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  Ref(int) v
+  (new(v, 20); (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5))))))
+
+SymTable:
+(empty)
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  (new(v, 20); (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5))))))
+
+SymTable:
+  v → (0, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  (new(v, 20); (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5))))))
+
+SymTable:
+  v → (0, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  new(v, 20)
+  (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5)))))
+
+SymTable:
+  v → (0, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  new(v, 20)
+  (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5)))))
+
+SymTable:
+  v → (0, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5)))))
+
+SymTable:
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  (Ref(Ref(int)) a; (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5)))))
+
+SymTable:
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  Ref(Ref(int)) a
+  (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5))))
+
+SymTable:
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  Ref(Ref(int)) a
+  (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5))))
+
+SymTable:
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5))))
+
+SymTable:
+  a → (0, Ref(int))
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  (new(a, v); (print(rH(v)); print((rH(rH(a)) + 5))))
+
+SymTable:
+  a → (0, Ref(int))
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  new(a, v)
+  (print(rH(v)); print((rH(rH(a)) + 5)))
+
+SymTable:
+  a → (0, Ref(int))
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  new(a, v)
+  (print(rH(v)); print((rH(rH(a)) + 5)))
+
+SymTable:
+  a → (0, Ref(int))
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  (print(rH(v)); print((rH(rH(a)) + 5)))
+
+SymTable:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  (print(rH(v)); print((rH(rH(a)) + 5)))
+
+SymTable:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  print(rH(v))
+  print((rH(rH(a)) + 5))
+
+SymTable:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  print(rH(v))
+  print((rH(rH(a)) + 5))
+
+SymTable:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  print((rH(rH(a)) + 5))
+
+SymTable:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Out:
+  20
+
+FileTable:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+  print((rH(rH(a)) + 5))
+
+SymTable:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Out:
+  20
+
+FileTable:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 9
+ExeStack:
+(empty)
+SymTable:
+  a → (2, Ref(int))
+  v → (1, int)
+
+Out:
+  20
+  25
+
+FileTable:
+(empty)
+Heap:
+1 -> 20
+2 -> (1, int)
+
+
+
+--------------------------------------------------------------------------------
+

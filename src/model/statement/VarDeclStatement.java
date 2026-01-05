@@ -15,11 +15,11 @@ public record VarDeclStatement(Type type, String variableName) implements Statem
 
     @Override
     public ProgramState execute(ProgramState state) {
-        if (state.symbolTable().isDefined(variableName)) {
+        if (state.getSymTable().isDefined(variableName)) {
             throw new StatementException("Variable " + variableName + " is already defined");
         }
-        state.symbolTable().declareVar(type, variableName);
-        return state;
+        state.getSymTable().declareVar(type, variableName);
+        return null;
     }
 
     @Override
