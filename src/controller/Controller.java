@@ -18,76 +18,77 @@ public class Controller {
         this.repo = repository;
     }
 
+    // ADDED: Getter so the GUI can see the data to update tables
+    public IRepository getRepo() {
+        return repo;
+    }
+
+    // MODIFIED: Added these to let the GUI start/stop the thread pool manually
+    public void setExecutor() {
+        executor = Executors.newFixedThreadPool(2);
+    }
+
+    public void stopExecutor() {
+        if (executor != null) {
+            executor.shutdownNow();
+        }
+    }
+
+    // CHANGED TO PUBLIC: So the GUI button can call it once per click
     public List<ProgramState> removeCompletedPrg(List<ProgramState> inPrgList) {
         return inPrgList.stream()
                 .filter(ProgramState::isNotCompleted)
                 .collect(Collectors.toList());
     }
 
+    // CHANGED TO PUBLIC: So the GUI button can call it
     public void oneStepForAllPrg(List<ProgramState> prgList) throws InterruptedException {
-        // Log states before execution
         prgList.forEach(repo::logPrgStateExec);
 
-        // Prepare the list of callables
         List<Callable<ProgramState>> callList = prgList.stream()
                 .map((ProgramState p) -> (Callable<ProgramState>) (p::oneStep))
                 .collect(Collectors.toList());
 
-        // Execute concurrently and collect forked states
         List<ProgramState> newPrgList = executor.invokeAll(callList).stream()
                 .map(future -> {
                     try {
                         return future.get();
                     } catch (Exception e) {
-                        System.err.println(e.getMessage());
                         return null;
                     }
                 })
                 .filter(p -> p != null)
                 .collect(Collectors.toList());
 
-        // Add the new created threads to the list of existing threads
         prgList.addAll(newPrgList);
-
-        // Log states after execution
         prgList.forEach(repo::logPrgStateExec);
-
-        // Update the repository state
         repo.setPrgList(prgList);
     }
 
+    // KEEP THIS: This is for your old text-based menu (Interpreter.java)
     public void executeAllSteps() {
-        executor = Executors.newFixedThreadPool(2); //
-
-        // Initial list of programs
+        setExecutor(); // Use the new helper
         List<ProgramState> prgList = removeCompletedPrg(repo.getPrgList());
 
         while (!prgList.isEmpty()) {
-            // Garbage Collector takes into account all shared symbol tables
             conservativeGarbageCollector(prgList);
-
             try {
                 oneStepForAllPrg(prgList);
             } catch (InterruptedException e) {
-                System.err.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
-
             prgList = removeCompletedPrg(repo.getPrgList());
         }
 
-        executor.shutdownNow();
-
-        // Update the final repository state
+        stopExecutor(); // Use the new helper
         repo.setPrgList(prgList);
     }
 
-    private void conservativeGarbageCollector(List<ProgramState> prgList) {
-        // Collect addresses from all active symbol tables
+    public void conservativeGarbageCollector(List<ProgramState> prgList) {
         List<Integer> allAddresses = prgList.stream()
                 .flatMap(p -> IHeap.getAddrFromValues(p.getSymTable().getValues().values()).stream())
                 .collect(Collectors.toList());
 
-        // Shared Heap update
         if (!prgList.isEmpty()) {
             prgList.get(0).getHeap().safeGarbageCollector(allAddresses);
         }

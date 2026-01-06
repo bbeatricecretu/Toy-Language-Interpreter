@@ -31,6 +31,11 @@ public class Stack<T> implements IStack<T> {
     }
 
     @Override
+    public java.util.Collection<T> getContent() {
+        return this.stack; // Returns the Deque which can be converted to a list by the GUI
+    }
+    
+    @Override
     public String toString() {
         if (stack.isEmpty()) return "(empty)";
 

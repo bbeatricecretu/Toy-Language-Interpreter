@@ -24,4 +24,6 @@ public interface IDictionary<T> {
     void put(String key, T value); // Added for TypeChecker
 
     IDictionary<T> deepCopy(); // Added for TypeChecker
+
+    Map<String, T> getContent();
 }

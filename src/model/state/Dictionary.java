@@ -94,4 +94,9 @@ public class Dictionary<T> implements IDictionary<T> {
         }
         return sb.toString();
     }
+
+    @Override
+    public Map<String, T> getContent() {
+        return this.dict; // Returns the internal HashMap
+    }
 }

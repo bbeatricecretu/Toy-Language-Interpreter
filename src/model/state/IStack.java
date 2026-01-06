@@ -6,4 +6,7 @@ public interface IStack<T> {
     T pop();
 
     boolean isEmpty();
+
+    java.util.Collection<T> getContent();
 }
+

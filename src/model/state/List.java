@@ -24,4 +24,9 @@ public class List<T> implements IList<T> {
         }
         return sb.toString();
     }
+
+    @Override
+    public java.util.List<T> getContent() {
+        return this.list;
+    }
 }

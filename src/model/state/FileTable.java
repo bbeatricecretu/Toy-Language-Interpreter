@@ -63,4 +63,9 @@ public class FileTable implements IFileTable {
         }
         return result.toString();
     }
+
+    @Override
+    public Map<String, BufferedReader> getContent() {
+        return this.files; // Returns the internal HashMap of opened files
+    }
 }

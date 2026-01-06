@@ -1,0 +1,102 @@
+Id: 1
+ExeStack:
+  (int v; (Ref(int) a; (v = 10; (new(a, 22); (fork((wH(a, 30); (v = 32; (print(v); print(rH(a)))))); (print(v); print(rH(a))))))))
+
+SymTable:
+(empty)
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 1
+ExeStack:
+  int v
+  (Ref(int) a; (v = 10; (new(a, 22); (fork((wH(a, 30); (v = 32; (print(v); print(rH(a)))))); (print(v); print(rH(a)))))))
+
+SymTable:
+(empty)
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 1
+ExeStack:
+  int v
+  (Ref(int) a; (v = 10; (new(a, 22); (fork((wH(a, 30); (v = 32; (print(v); print(rH(a)))))); (print(v); print(rH(a)))))))
+
+SymTable:
+(empty)
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 1
+ExeStack:
+  (Ref(int) a; (v = 10; (new(a, 22); (fork((wH(a, 30); (v = 32; (print(v); print(rH(a)))))); (print(v); print(rH(a)))))))
+
+SymTable:
+  v → 0
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 1
+ExeStack:
+  (Ref(int) a; (v = 10; (new(a, 22); (fork((wH(a, 30); (v = 32; (print(v); print(rH(a)))))); (print(v); print(rH(a)))))))
+
+SymTable:
+  v → 0
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
+Id: 1
+ExeStack:
+  Ref(int) a
+  (v = 10; (new(a, 22); (fork((wH(a, 30); (v = 32; (print(v); print(rH(a)))))); (print(v); print(rH(a))))))
+
+SymTable:
+  v → 0
+
+Out:
+(empty)
+FileTable:
+(empty)
+Heap:
+
+
+
+--------------------------------------------------------------------------------
+
